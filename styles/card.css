@@ -1,44 +1,77 @@
 #card-preview { 
-    width: 60wv;
+    width: 100%;
     height: 70vh;
-    padding-bottom: 20px;
+    padding-bottom: var(--spacing-unit);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+#card-preview>#canvas {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #card-preview>#canvas>canvas {
     position: absolute;
     left: 50%;
-    transform: translate(-50%, 7vh);
+    transform: translate(-50%, 0);
     height: 58vh;
-    object-fit: cover;
-    border: 1px solid black;
+    max-height: 90%;
+    object-fit: contain;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
 }
 
 #canvas-bg {
     position: absolute;
     left: 50%;
-    transform: translateX(-49.5%);
+    transform: translateX(-50%);
     height: 72vh;
+    max-height: 100%;
+    z-index: -1;
 }
 
 @media screen and (max-width:767px),
 screen and (max-device-width:767px) {
     #card-preview {
-        max-height: 400px;
+        height: auto;
+        min-height: 400px;
+        max-height: 450px;
+        padding: 15px 10px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        touch-action: manipulation;
     }
 
     #card-preview>#canvas {
         display: flex;
         justify-content: center;
+        align-items: center;
+        height: 100%;
+        position: relative;
     }
     
     #card-preview>#canvas>canvas {
         object-fit: contain;
         height: auto;
-        width: 90vw;
+        max-height: 95%;
+        width: 95%;
+        max-width: 100%;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        touch-action: manipulation;
     }
 
     #canvas-bg {
-        /* I'm sorry mobile users. */
         display: none;
     }
 }

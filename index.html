@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FF0405">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
     <!-- Primary Meta Tags -->
@@ -30,14 +33,17 @@
     <meta property="twitter:image" content="https://github.com/skyventuree/skyventuree/raw/main/meta.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/editor.css">
     <link rel="stylesheet" href="styles/card.css">
-    <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/button.css">
+    <link rel="stylesheet" href="styles/clock.css">
 </head>
 
 <body>
     <base target="_blank" rel="noopener noreferrer">
+
+
 
     <div id="header">
         <div id="intro-icon">
@@ -52,7 +58,7 @@
     <hr>
 
     <!-- Preview area -->
-    <div id="card-preview">
+    <div id="card-preview" data-mobile-hint="双指缩放可调整预览大小">
         <img src="assets/canvas.png" id="canvas-bg">
         <div id="canvas">
             <canvas id="canvas-card" width="1770" height="1300"></canvas>
@@ -60,8 +66,15 @@
         </div>
     </div>
 
-    <button id="refresh" class="action-btn" onclick="redrawBg();redrawText(true)"><i
-            class="fa fa-refresh"></i><span>Refresh</span></button>
+    <div class="action-buttons">
+        <button id="refresh" class="action-btn" onclick="redrawBg();redrawText(true)">
+            <i class="fa fa-refresh"></i><span data-i18n="button.refresh">Refresh</span>
+        </button>
+        <button class="action-btn" onclick="exportCard()">
+            <i class="fa fa-arrow-circle-o-down"></i>
+            <span data-i18n="button.download">下载你的预告信</span>
+        </button>
+    </div>
 
     <hr>
 
@@ -71,184 +84,139 @@
         <div id="content">
             <label for="content" data-i18n="editor.content">What do you want to write on the calling card?</label>
             <textarea name="content" cols="30" rows="6" placeholder="TAKE YOUR HEART"></textarea>
-            <p data-i18n="editor.notice">NOTE: P5CC does not linebreak/resize the text automatically.<br /> Please make
-                a new line by pressing
-                Enter/Return on your keyboard.</p>
+            <p data-i18n="editor.notice">注意：预告信生成器 不会自动换行/调整文本大小。<br> 请按键盘上的 Enter 键换行。</p>
+            
+            <div id="project-info" style="margin-top: 15px; padding: 10px; background-color: rgba(0,0,0,0.05); border-radius: 5px; font-size: 14px; line-height: 1.4;">
+                <p><strong>《女神异闻录5》© ATLUS. © SEGA. 保留所有权利。</strong></p>
+                <p>本项目基于 <a href="https://github.com/skyventuree/p5cc">skyventuree/p5cc</a> 修改，原始版本由 <a href="https://github.com/sorae42">sorae42</a> 开发。</p>
+                <p><a href="https://www.deviantart.com/elmind/art/Persona-5-Calling-Card-Base-676530039">Persona 5 Calling Card 基础素材</a>，作者 <a href="https://www.deviantart.com/elmind">Elmind</a>（已从 DeviantArt 删除）。</p>
+                <p><a href="https://lzxhahaha.github.io/persona5/">Persona 5 风格文字生成器</a>，作者 <a href="https://github.com/LzxHahaha">LzxHahaha</a>，后由 <a href="https://sorae42.github.io">sorae42</a> 移植与修改。</p>
+                <p>Persona 5 Logo 与相关素材版权归 ATLUS 所有。以上素材均基于合理使用（Fair Use）原则。</p>
+            </div>
         </div>
 
         <div id="options">
             <hr class="mobile">
 
-            <p style="text-align:center" data-i18n="editor.refresh_tip">If nothing seems to happen, click <i
-                    class="fa fa-refresh"></i>Refresh.</p>
-            <div class="tab-btn" id="tab-handler">
-                <button id="option-default" data-text-option="alignment"><i class="fa fa-arrows"
-                        style="transform:rotate(-10deg)"></i></button>
-                <button data-text-option="fonts"><i class="fa fa-font" style="transform:rotate(10deg)"></i></button>
-                <button data-text-option="decoration"><i class="fa fa-paint-brush"
-                        style="transform:rotate(-10deg)"></i></button>
-                <button data-text-option="advanced"><i class="fa fa-cog" style="transform:rotate(10deg)"></i></button>
-                <button data-text-option="languages"><i class="fa fa-globe"
-                        style="transform:rotate(-10deg)"></i></button>
-            </div>
 
-            <!-- Alignments -->
+            <!-- 统一设计选项 -->
             <div class="options-tab" id="alignment">
-                <h2 data-i18n="alignments.title">Position and alignments</h2>
-                <div id="text-options">
-                    <label for="text-align" data-i18n="alignments.options.text_align"><i
-                            class="fa fa-align-center"></i>Align text: </label>
-                    <select name="text-align" id="text-align" onchange="redrawBg();redrawText()"
-                        style="transform:rotate(-3.5deg)">
-                        <option value="left" data-i18n="alignments.options.left">left</option>
-                        <option value="center" data-i18n="alignments.options.center" selected>center</option>
-                        <option value="right" data-i18n="alignments.options.right">right</option>
-                    </select>
-                    <br><br>
+                <div class="design-panel">
+                    <div class="design-section">
+                        <h3><i class="fa fa-align-center"></i>对齐方式</h3>
+                        <div class="design-controls">
+                            <div class="control-group">
+                                <label for="text-align" data-i18n="alignments.options.text_align">Align text: </label>
+                                <select name="text-align" id="text-align" onchange="redrawBg();redrawText()">
+                                    <option value="left" data-i18n="alignments.options.left">left</option>
+                                    <option value="center" data-i18n="alignments.options.center" selected>center
+                                    </option>
+                                    <option value="right" data-i18n="alignments.options.right">right</option>
+                                </select>
+                            </div>
 
-                    <label class="cb-container">
-                        <input type="checkbox" name="text-options" onclick="isMiddle=this.checked"
-                            onchange="redrawText();redrawBg()" checked>
-                        <span class="checkmark"></span>
-                        <span data-i18n="alignments.options.vertical_align">Vertically aligned text</span>
-                    </label>
+                            <div class="control-group">
+                                <label class="cb-container">
+                                    <input type="checkbox" name="text-options" onclick="isMiddle=this.checked"
+                                        onchange="redrawText();redrawBg()" checked>
+                                    <span class="checkmark"></span>
+                                    <span data-i18n="alignments.options.vertical_align">Vertically aligned text</span>
+                                </label>
+                            </div>
 
-                    <label for="text-top" data-i18n="alignments.options.shift_from_top">or shift text from the top
-                        by</label>
-                    <input type="number" name="text-top" id="text-top" min="0" max="2000" value="0" step="5"
-                        onchange="redrawText();redrawBg()">
-                    px
-                </div>
-            </div>
+                            <div class="control-group">
+                                <label for="text-top" data-i18n="alignments.options.shift_from_top">Shift text from
+                                    top:</label>
+                                <div class="input-with-unit">
+                                    <input type="number" name="text-top" id="text-top" min="0" max="2000" value="0"
+                                        step="5" onchange="redrawText();redrawBg()">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Fonts -->
-            <div class="options-tab" id="fonts">
-                <h2 data-i18n="font.title">Fonts</h2>
-                <div id="font-options">
-                    <label for="font-family">Set family</label>
-                    <input type="text" name="font-family" id="font-family" value="sans-serif" placeholder="sans-serif"
-                        style="font-family:sans-serif">
-                    <label for="font-size">with size of</label>
-                    <input type="number" name="font-size" id="font-size" min="80" max="240" value="120" step="2"
-                        onchange="redrawBg()">
-                    px.
-                    <p><i class="fa fa-info-circle"></i> <span data-i18n="font.options.family_tip">
-                        Font family are fonts that are installed on your computer.
-                    </span></p>
-                </div>
-            </div>
+                    <div class="design-section">
+                        <h3><i class="fa fa-font"></i>字体</h3>
+                        <div class="design-controls">
+                            <div class="control-group">
+                                <label for="font-family">Font family:</label>
+                                <input type="text" name="font-family" id="font-family" value="sans-serif"
+                                    placeholder="sans-serif" style="font-family:sans-serif">
+                            </div>
 
-            <!-- Decorations -->
-            <div class="options-tab" id="decoration">
-                <h2 data-i18n="decorations.title">Text Decorations</h2>
-                <div id="stroke">
-                    <label class="cb-container">
-                        <input type="checkbox" name="stroke" onclick="textStroke=this.checked" onchange="redrawText()"
-                            checked>
-                        <span class="checkmark"></span><label for="stroke">Stroke text</label>
-                    </label>
+                            <div class="control-group">
+                                <label for="font-size">Font size:</label>
+                                <div class="input-with-unit">
+                                    <input type="number" name="font-size" id="font-size" min="80" max="240" value="120"
+                                        step="2" onchange="redrawBg()">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
 
-                    <label for="stroke-width">Set width of stroke to</label>
-                    <input type="number" name="stroke-width" id="stroke-width" min="5" max="10" value="6" step="1"
-                        onchange="textStrokeWidth=this.value">
-                    px.
-                </div>
 
-            </div>
+                        </div>
+                    </div>
 
-            <!-- Advanced -->
-            <div class="options-tab" id="advanced">
-                <h2 data-i18n="advanced.options.logo_title">Logo options</h2>
-                <div id="show-logo">
-                    <label class="cb-container">
-                        <input type="checkbox" name="show-logo" onclick="showLogo=this.checked" onchange="redrawBg()"
-                            checked>
-                        <span class="checkmark"></span>
-                        Show "Take your heart" logo
-                    </label>
-                </div>
 
-                <div id="logo-size">
-                    <label for="logo-size">Scale logo by</label>
-                    <input type="number" name="logo-size" id="logo-size-option" min="0" max="10" value="1" step="0.05"
-                        onchange="redrawBg()">
-                    <label for="offset">with an offset of </label>
-                    <input type="number" name="offset" id="logo-offset" min="0" max="1000" value="20"
-                        onchange="redrawBg()">
-                    px.
-                </div>
 
-                <hr>
 
-                <h2 data-i18n="advanced.options.delay_title">Delay rate</h2>
-                <div id="delay-rate">
-                    <label for="delay-rate" data-i18n="advanced.options.delay_desc">Delay each text being created
-                        by</label>
-                    <input type="number" name="delay-rate" min="0" max="1000" value="1000" onchange="saveDelay()"> ms
-                    <p><i class="fa fa-info-circle"></i> <span data-i18n="advanced.options.delay_tip">Increase this
-                            value if you feels the page is laggy.</span></p>
                 </div>
             </div>
 
 
-            <!-- Language -->
-            <div class="options-tab" id="languages">
-                <h2 data-i18n="languages.title">Interface Language</h2>
-                <div id="lang-options">
-                    <select name="lang-select" id="lang-select" onchange="changeLang()" multiple>
-                        <!-- Auto Load from lang.json -->
-                    </select>
-                </div>
-                <p style="text-align: center;">Translator: <span data-i18n="meta.author">{meta.author}</span></p>
-            </div>
 
-            <hr>
-            <!-- Watermarking -->
-            <div id="wtm-option">
-                <label class="cb-container">
-                    <input type="checkbox" name="showWatermark" id="showWatermark" onclick="showWtm=this.checked"
-                        onchange="redrawBg()" checked>
-                    <span class="checkmark"></span>
-                    Show watermark to this website
-                </label>
-            </div>
-
-            <button class="action-btn" onclick="exportCard()"><i class="fa fa-arrow-circle-o-down"></i>Download your
-                card</button>
         </div>
+    </div>
+
+    <hr>
+
+
+    </div>
     </div>
 
     <hr />
 
-    <div id="credits">
-        <p>Persona 5 © ATLUS. © SEGA. All rights reserved.</p>
-        <p><a href="https://github.com/skyventuree/p5cc">Persona 5 Calling Card Maker</a> website designed and written
-            by <a href="https://sorae42.github.io">sorae42</a>.</p>
-        <p>Assets used:</p>
-        <ul>
-            <li><a href="https://www.deviantart.com/elmind/art/Persona-5-Calling-Card-Base-676530039">Persona 5 Calling
-                    Card Base</a> by <a href="https://www.deviantart.com/elmind">Elmind</a>.</li>
-            <li>Elmind has deleted all of their work on DeviantArt, unfortunately.</li>
-            <li><a href="https://lzxhahaha.github.io/persona5/">Persona 5 Style Text Generator</a> by <a
-                    href="https://github.com/LzxHahaha">LzxHahaha</a>.<br>
-                Ported and modified by <a href="https://sorae42.github.io">sorae42</a>.</li>
-            <li>Persona 5 Logo and Assets by ALTUS.</li>
-        </ul>
-        <p>All assets are all under fair use.</p>
-    </div>
 
-    <div id="support">
-        <button>
-            <a href="https://ko-fi.com/shigukk" style="text-decoration:none">
-                <i class="fa fa-coffee"></i>Buy me a coffee! (Donate)
-            </a>
-        </button>
-    </div>
+
+
+
+
+    <footer id="footer">
+        <div id="credits" class="centered-credits">
+            <p>© 2025 P5R Calling Card Generator</p>
+            <p data-i18n="credits.description">This is a fan-made tool, not affiliated with ATLUS or SEGA.</p>
+            <div id="runtime-clock">
+                <div class="clock-container">
+                    <span class="clock-prefix">本项目已运行：</span>
+                    <div class="clock-display">
+                        <div class="time-card" data-unit="days">
+                            <div class="card-front">0</div>
+                        </div>
+                        <span class="unit-text">天</span>
+                        <div class="time-card" data-unit="hours">
+                            <div class="card-front">0</div>
+                        </div>
+                        <span class="unit-text">时</span>
+                        <div class="time-card" data-unit="minutes">
+                            <div class="card-front">0</div>
+                        </div>
+                        <span class="unit-text">分</span>
+                        <div class="time-card" data-unit="seconds">
+                            <div class="card-front">0</div>
+                        </div>
+                        <span class="unit-text">秒</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Main utility and core function-->
     <script src="scripts/editor.js"></script>
     <script src="scripts/card.js"></script>
     <script src="scripts/exporter.js"></script>
+    <script src="scripts/clock.js"></script>
 
     <!-- Text generator from Persona 5 Style Text Gen @lzxhahaha -->
     <script src="scripts/textgen/utils.js"></script>
@@ -257,6 +225,7 @@
 
     <!-- Then run i18n script -->
     <script src="scripts/i18n.js"></script>
+    <script src="scripts/mobile.js"></script>
 </body>
 
 </html>

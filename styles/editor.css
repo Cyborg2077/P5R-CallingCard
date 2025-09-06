@@ -3,16 +3,31 @@ input,
 select,
 textarea {
     background-color: #fff;
-    border: 2px solid #000;
-    border-radius: 0;
-    box-shadow: 4px 4px #000;
-    color: #000;
-    padding: 5px;
+    border: 2px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: 4px 4px var(--accent-color);
+    color: var(--accent-color);
+    padding: 8px 12px;
     outline: 0;
+    transition: all 0.2s ease;
+    margin: calc(var(--spacing-unit) * 0.5) 0;
 }
+
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    box-shadow: 2px 2px var(--accent-color);
+    transform: translate(2px, 2px);
+}
+
 .options-tab > h2 {
     text-align: center;
+    margin-bottom: var(--spacing-unit);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: calc(var(--spacing-unit) * 0.5);
 }
+
 select {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -20,50 +35,152 @@ select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7em top 50%;
+    background-size: 0.65em auto;
+    padding-right: 2em;
 }
+
 textarea {
     font-family: sans-serif;
     box-sizing: border-box;
     width: 100%;
-    font-size: 32px;
+    font-size: 28px;
     text-align: center;
     white-space: pre-wrap;
+    min-height: 150px;
+    resize: vertical;
+    padding: 12px;
 }
+
 input[type="number"] {
-    max-width: 60px;
+    max-width: 70px;
+    text-align: center;
 }
 #editor {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
+    grid-template-rows: auto;
     grid-template-areas: "content options";
-    grid-gap: 30px;
-    color: #000;
-    padding: 0 20px;
+    grid-gap: calc(var(--spacing-unit) * 2);
+    color: var(--accent-color);
+    padding: var(--spacing-unit);
     height: 100%;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    margin: var(--spacing-unit) 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+#editor > div {
+    padding: var(--spacing-unit);
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+}
+
 #editor > div > h2 {
     text-align: center;
+    color: var(--text-color);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
+
+.options-tab {
+    display: none;
+    padding: var(--spacing-unit);
+}
+
+.options-tab.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 @media screen and (max-width: 767px), screen and (max-device-width: 767px) {
     #editor {
         grid-template-columns: 1fr;
         grid-template-areas: "content" "options";
+        padding: 10px;
+        grid-gap: 15px;
+        margin: 10px 0;
+    }
+    
+    #editor > div {
+        padding: 15px;
+        border-radius: 12px;
     }
     
     textarea {
-        height: 420px;
-        padding: 0;
+        min-height: 180px;
+        max-height: 250px;
+        padding: 12px;
+        font-size: 16px; /* 防止iOS缩放 */
+        line-height: 1.4;
+        border-radius: 8px;
+    }
+    
+    /* 改进表单元素在移动设备上的可用性 */
+    input, select {
+        height: 48px; /* 增加触摸目标大小 */
+        margin-bottom: 12px;
+        padding: 12px 16px;
+        font-size: 16px;
+        border-radius: 8px;
+        border-width: 2px;
+    }
+    
+    input[type="number"] {
+        max-width: 80px;
+        text-align: center;
+    }
+    
+    /* 优化选项卡内容在移动设备上的显示 */
+    .option-content {
+        padding: 20px 15px;
+    }
+    
+    /* 改进复选框容器在移动设备上的显示 */
+    .cb-container {
+        padding: 15px 0;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* 增加复选框的可点击区域 */
+    .checkmark {
+        height: 24px;
+        width: 24px;
+    }
+    
+    /* 优化按钮在移动端的显示 */
+    button {
+        min-height: 48px;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        margin: 8px 4px;
     }
 }
 .cb-container {
     display: block;
     position: relative;
     padding-left: 35px;
-    margin-bottom: 12px;
+    margin-bottom: calc(var(--spacing-unit) * 0.75);
     cursor: pointer;
+    transition: all 0.2s ease;
 }
+
+.cb-container:hover {
+    transform: translateX(2px);
+}
+
 .cb-container input {
     position: absolute;
     opacity: 0;
@@ -74,6 +191,7 @@ input[type="number"] {
     left: 0;
     z-index: 1;
 }
+
 .checkmark {
     position: absolute;
     top: 0;
@@ -81,18 +199,32 @@ input[type="number"] {
     height: 16px;
     width: 16px;
     background-color: #fff;
-    border: 2px solid #000;
-    box-shadow: 4px 4px #000;
-    color: #000;
+    border: 2px solid var(--accent-color);
+    border-radius: calc(var(--border-radius) * 0.5);
+    box-shadow: 3px 3px var(--accent-color);
+    color: var(--accent-color);
+    transition: all 0.2s ease;
 }
+
+.cb-container:hover .checkmark {
+    box-shadow: 2px 2px var(--accent-color);
+    transform: translate(1px, 1px);
+}
+
 .checkmark:after {
     content: "";
     position: absolute;
     display: none;
 }
+
+.cb-container input:checked ~ .checkmark {
+    background-color: #fff;
+}
+
 .cb-container input:checked ~ .checkmark:after {
     display: block;
 }
+
 .cb-container .checkmark:after {
     left: 4px;
     top: 0;

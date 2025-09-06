@@ -10,7 +10,7 @@ function exportCard() {
       .replace("image/png", "image/octet-stream"),
     c = document.createElement("a");
   (c.href = r),
-    (c.download = `p5cc_${Math.floor(1e6 * Math.random())}.png`),
+    (c.download = `CallingCard_${Math.floor(1e6 * Math.random())}.png`),
     (c.target = "blank"),
     c.click(),
     t.restore();

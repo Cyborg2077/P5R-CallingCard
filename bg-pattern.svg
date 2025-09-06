@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- 背景 -->
+  <rect width="200" height="200" fill="#2D2D2D" opacity="0.1"/>
+  
+  <!-- P5R风格图案 -->
+  <g opacity="0.15">
+    <!-- 红色斜线 -->
+    <line x1="0" y1="40" x2="60" y2="0" stroke="#FF0405" stroke-width="3" />
+    <line x1="140" y1="0" x2="200" y2="60" stroke="#FF0405" stroke-width="3" />
+    <line x1="0" y1="160" x2="60" y2="200" stroke="#FF0405" stroke-width="3" />
+    <line x1="140" y1="200" x2="200" y2="140" stroke="#FF0405" stroke-width="3" />
+    
+    <!-- 中心图案 -->
+    <path d="M100,70 L120,100 L100,130 L80,100 Z" fill="none" stroke="#FF0405" stroke-width="2" />
+    <circle cx="100" cy="100" r="40" fill="none" stroke="#FF0405" stroke-width="1" stroke-dasharray="5,5" />
+    
+    <!-- 装饰元素 -->
+    <path d="M30,30 L50,50 M150,30 L170,50 M30,170 L50,150 M150,170 L170,150" stroke="#FF0405" stroke-width="1" />
+    <path d="M100,20 L100,40 M100,160 L100,180 M20,100 L40,100 M160,100 L180,100" stroke="#FF0405" stroke-width="1" />
+  </g>
+  
+  <!-- 面具图案暗示 -->
+  <path d="M90,85 Q100,75 110,85 Q115,95 110,105 Q100,115 90,105 Q85,95 90,85 Z" fill="none" stroke="#FF0405" stroke-width="0.5" opacity="0.2" />
+</svg>

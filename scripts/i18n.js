@@ -1,56 +1,13 @@
 const VERSION = 1;
-let language = "en";
+let language = "zh";
 
 async function initLanguage() {
-    console.info("[i18n::initLanguage] Initializing language settings...");
-    
-    // クッキーから言語設定を取得
-    const langCookie = document.cookie.replace(/(?:(?:^|.*;\s*)lang\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    if (langCookie) {
-        language = langCookie;
-    } else {
-        language = navigator.language.split('-')[0];
-        const date = new Date();
-        date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-        document.cookie = `lang=${language};expires=${date.toUTCString()};path=/`;
-    }
-
-    // 言語リストを読み込んでセレクトボックスを初期化
-    try {
-        const response = await fetch('./languages/lang.json');
-        if (!response.ok) {
-            throw new Error('Failed to load language list');
-        }
-        const langList = await response.json();
-        
-        const select = document.querySelector('#lang-select');
-        if (select) {
-            for (const [code, name] of Object.entries(langList)) {
-                const option = document.createElement('option');
-                option.value = code;
-                option.textContent = name;
-                option.selected = code === language;
-                select.appendChild(option);
-            }
-            
-            // イベントリスナーを追加
-            select.addEventListener('change', changeLang);
-        }
-    } catch (error) {
-        console.error("[i18n::initLanguage] Failed to load language list:", error);
-    }
+    console.info("[i18n::initLanguage] Language fixed to Chinese (zh)...");
+    // 固定语言为中文，不再需要语言选择器
+    language = "zh";
 }
 
-function changeLang() {
-    const select = document.querySelector('#lang-select');
-    if (select) {
-        const newLang = select.value;
-        const date = new Date();
-        date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-        document.cookie = `lang=${newLang};expires=${date.toUTCString()};path=/`;
-        window.location.reload();
-    }
-}
+// changeLang function removed - language is now fixed to Chinese
 
 async function loadLanguage() {
     try {
@@ -105,15 +62,10 @@ async function loadLanguage() {
                     "right": langData.alignments.options.right
                 }
             },
-            // チェックボックスのラベル
-            checkbox: {
-                "showWatermark": langData.editor.show_watermark,
-                "show-logo": langData.advanced.options.show_logo
-            },
             // ボタン
             button: {
                 "#refresh > span": langData.preview.refresh,
-                ".action-btn:last-child": langData.editor.download
+                "#download-btn > span": langData.editor.download
             },
             // ラベル
             label: {
@@ -141,12 +93,24 @@ async function loadLanguage() {
         }
 
         // チェックボックスの翻訳
-        for (const [id, text] of Object.entries(translations.checkbox)) {
-            const label = document.querySelector(`#${id}`).parentElement;
-            if (label) {
-                const span = label.querySelector('.checkmark');
-                if (span?.nextSibling) span.nextSibling.textContent = text;
+        try {
+            for (const [id, text] of Object.entries(translations.checkbox)) {
+                try {
+                    const checkbox = document.querySelector(`#${id}`);
+                    // 确保checkbox和parentElement都存在
+                    if (checkbox && checkbox.parentElement) {
+                        const label = checkbox.parentElement;
+                        const span = label.querySelector('.checkmark');
+                        if (span && span.nextSibling) {
+                            span.nextSibling.textContent = text;
+                        }
+                    }
+                } catch (innerError) {
+                    console.warn(`Error translating checkbox ${id}:`, innerError);
+                }
             }
+        } catch (e) {
+            console.warn("Error translating checkboxes:", e);
         }
 
         // ボタンの翻訳

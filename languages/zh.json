@@ -2,7 +2,7 @@
     "meta": {
         "language": "中文",
         "literal": "Chinese",
-        "font": "Arial",
+        "font": "Arial, 'Microsoft YaHei', 'SimHei', sans-serif",
         "version": "1",
         "author": "Lingluoluo"
     },
@@ -15,7 +15,7 @@
     },
     "editor": {
         "content": "你想在预告信上写什么？",
-        "notice": "注意：P5CC 不会自动换行/调整文本大小。<br /> 请按键盘上的 Enter/Return 键换行。",
+        "notice": "注意：预告信生成器 不会自动换行/调整文本大小。<br /> 请按键盘上的 Enter 键换行。",
         "refresh_tip": "如果上面没反应 <i class=\"fa fa-refresh\"></i>刷个新？",
         "show_watermark": "展示本网页的水印",
         "download": "下载你的预告信"
@@ -35,7 +35,7 @@
     "font": {
         "title": "字体",
         "options": {
-            "family": "字体 (font-family)",
+            "family": "字体",
             "size": "字号",
             "family_tip": "字体是安装在你电脑上的字体."
         }

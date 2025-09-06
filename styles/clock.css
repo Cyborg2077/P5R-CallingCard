@@ -1,0 +1,116 @@
+/* 动态时钟样式 */
+#runtime-clock {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.clock-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.clock-prefix {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin-right: 5px;
+}
+
+.clock-display {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    justify-content: center;
+}
+
+.time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.time-card {
+    position: relative;
+    width: 24px;
+    height: 30px;
+    perspective: 1000px;
+    margin: 0 1px;
+}
+
+.card-front {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.unit-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 2px;
+}
+
+
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .clock-prefix {
+        font-size: 14px;
+    }
+    
+    .clock-display {
+        gap: 2px;
+    }
+    
+    .time-card {
+        width: 20px;
+        height: 26px;
+    }
+    
+    .card-front,
+    .card-back {
+        font-size: 10px;
+    }
+    
+    .unit-text {
+        font-size: 14px;
+        margin: 0 1px;
+    }
+}
+
+@media (max-width: 480px) {
+    .clock-prefix {
+        font-size: 12px;
+    }
+    
+    .clock-display {
+        gap: 1px;
+    }
+    
+    .time-card {
+        width: 18px;
+        height: 24px;
+    }
+    
+    .card-front,
+    .card-back {
+        font-size: 9px;
+    }
+    
+    .unit-text {
+        font-size: 12px;
+        margin: 0 1px;
+    }
+}
