@@ -1,7 +1,7 @@
 // 动态时钟功能
 class RuntimeClock {
     constructor() {
-        this.startTime = new Date('2025-01-01T00:00:00'); // 项目启动时间
+        this.startTime = new Date('2025-09-06T12:56:13'); // 项目启动时间
         this.currentTime = {
             days: 0,
             hours: 0,
