@@ -32,7 +32,7 @@ body {
     overflow-x: hidden;
     background-size: cover;
     background-color: var(--primary-color);
-    background-image: url('../assets/background.png');
+    background-image: url('../assets/background.jpg');
     background-blend-mode: overlay;
     background-attachment: fixed;
     line-height: 1.6;
