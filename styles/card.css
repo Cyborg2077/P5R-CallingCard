@@ -43,12 +43,12 @@
 @media screen and (max-width:767px),
 screen and (max-device-width:767px) {
     #card-preview {
-        height: auto;
-        min-height: 400px;
-        max-height: 450px;
-        padding: 15px 10px;
-        margin-bottom: 20px;
-        overflow: hidden;
+        height: 50vh;
+        min-height: 350px;
+        max-height: 400px;
+        padding: 10px;
+        margin-bottom: 15px;
+        overflow: visible;
         touch-action: manipulation;
     }
 
@@ -57,17 +57,23 @@ screen and (max-device-width:767px) {
         justify-content: center;
         align-items: center;
         height: 100%;
+        width: 100%;
         position: relative;
     }
     
     #card-preview>#canvas>canvas {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
         object-fit: contain;
         height: auto;
-        max-height: 95%;
-        width: 95%;
-        max-width: 100%;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        border-radius: 8px;
+        max-height: 90%;
+        width: auto;
+        max-width: 90%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--accent-color);
+        border-radius: 4px;
         touch-action: manipulation;
     }
 

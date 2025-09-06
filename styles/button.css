@@ -62,7 +62,7 @@ screen and (max-device-width:767px) {
     }
     
     button#refresh {
-        margin-top: 60px;
+        margin-top: 0px;
     }
     
     .action-btn {

@@ -472,19 +472,28 @@ screen and (max-device-width:767px) {
 
     /* 操作按钮优化 */
     .action-buttons {
-        gap: 10px;
+        gap: 8px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
         flex-wrap: nowrap;
+        margin: 15px 0;
     }
 
     .action-buttons button {
         flex: 1;
-        min-width: 120px;
-        max-width: 160px;
+        min-width: 100px;
+        max-width: 140px;
         margin: 0;
-        font-size: 14px;
-        padding: 12px 14px;
+        font-size: 13px;
+        padding: 10px 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .action-buttons button i {
+        margin-right: 4px;
+        font-size: 12px;
     }
 }
